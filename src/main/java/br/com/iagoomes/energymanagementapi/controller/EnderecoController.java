@@ -1,7 +1,7 @@
 package br.com.iagoomes.energymanagementapi.controller;
 
 import br.com.iagoomes.energymanagementapi.controller.mapper.EnderecoMapper;
-import br.com.iagoomes.energymanagementapi.controller.mapper.EnderecoResponse;
+import br.com.iagoomes.energymanagementapi.domain.endereco.EnderecoResponse;
 import br.com.iagoomes.energymanagementapi.domain.endereco.Endereco;
 import br.com.iagoomes.energymanagementapi.domain.endereco.EnderecoRequestPost;
 import br.com.iagoomes.energymanagementapi.repository.EnderecoRepository;
