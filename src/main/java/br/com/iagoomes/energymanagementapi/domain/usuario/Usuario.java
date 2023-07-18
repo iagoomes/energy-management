@@ -7,7 +7,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class Usuario {
     private Long id;
     private String nome;
