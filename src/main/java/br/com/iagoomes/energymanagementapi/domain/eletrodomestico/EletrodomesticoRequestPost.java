@@ -1,4 +1,7 @@
 package br.com.iagoomes.energymanagementapi.domain.eletrodomestico;
 
-public record EletrodomesticoRequestPost(String nome, String modelo, Long potencia) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record EletrodomesticoRequestPost(@NotNull Long id, @NotBlank String nome, @NotBlank String modelo, @NotBlank Long potencia) {
 }

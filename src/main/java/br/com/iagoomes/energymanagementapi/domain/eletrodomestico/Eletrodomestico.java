@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Eletrodomestico {
+    private Long id;
     private String nome;
     private String modelo;
     private Long potencia;
