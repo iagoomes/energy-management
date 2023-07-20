@@ -1,6 +1,7 @@
 package br.com.iagoomes.energymanagementapi.controller.mapper;
 
 import br.com.iagoomes.energymanagementapi.domain.eletrodomestico.Eletrodomestico;
+import br.com.iagoomes.energymanagementapi.domain.eletrodomestico.EletrodomesticoDetalhamentoResponse;
 import br.com.iagoomes.energymanagementapi.domain.eletrodomestico.EletrodomesticoRequestPost;
 import br.com.iagoomes.energymanagementapi.domain.eletrodomestico.EletrodomesticoResponse;
 import org.mapstruct.Mapper;
@@ -9,4 +10,5 @@ import org.mapstruct.Mapper;
 public interface EletrodomesticoMapper {
     Eletrodomestico eletrodomesticoRequestPostToEletrodomestico(EletrodomesticoRequestPost eletrodomesticoRequestPost);
     EletrodomesticoResponse eletrodomesticoToEletrodomesticoResponse(Eletrodomestico eletrodomestico);
+    EletrodomesticoDetalhamentoResponse eletrodomesticoToEletrodomesticoDetalhamentoResponse(Eletrodomestico eletrodomestico);
 }
