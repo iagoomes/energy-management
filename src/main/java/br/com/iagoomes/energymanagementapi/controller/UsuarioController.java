@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -36,15 +35,14 @@ public class UsuarioController {
     @PostMapping
     public ResponseEntity cadastrar(@RequestBody UsuarioRequestPost usuarioRequestPost, UriComponentsBuilder uriBuilder) {
         Map<Path, String> validacoesMap = validar(usuarioRequestPost);
-        if (!validacoesMap.isEmpty()) {
-            return ResponseEntity.badRequest().body(validacoesMap);
-        }
+        if (!validacoesMap.isEmpty()) return ResponseEntity.badRequest().body(validacoesMap);
 
         Usuario usuario = mapper.usuarioRequestPostToUsuario(usuarioRequestPost);
         repository.salvar(usuario);
+        UsuarioResponse usuarioResponse = mapper.usuarioToUsuarioResponse(usuario);
 
         URI uri = uriBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
-        UsuarioResponse usuarioResponse = mapper.usuarioToUsuarioResponse(usuario);
+
         return ResponseEntity.created(uri).body(usuarioResponse);
     }
 
@@ -52,17 +50,15 @@ public class UsuarioController {
     public ResponseEntity detalhar(@PathVariable Long id) {
         Optional<Usuario> usuarioOptional = repository.findByid(id);
         if (usuarioOptional.isEmpty()) return ResponseEntity.notFound().build();
-
         return ResponseEntity.ok(mapper.usuarioToUsuarioResponse(usuarioOptional.get()));
     }
 
     @GetMapping
     public ResponseEntity listar() {
-        List<UsuarioResponse> usuarios = repository.listar().stream().map(mapper::usuarioToUsuarioResponse).toList();
-        return ResponseEntity.ok(usuarios);
+        return ResponseEntity.ok(repository.listar().stream().map(mapper::usuarioToUsuarioResponse).toList());
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public ResponseEntity atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioRequestPut usuarioRequestPut) {
         Map<Path, String> validacoesMap = validar(usuarioRequestPut);
         if (!validacoesMap.isEmpty()) return ResponseEntity.badRequest().body(validacoesMap);
@@ -73,6 +69,12 @@ public class UsuarioController {
         usuario.atualizarDados(usuarioRequestPut);
 
         return ResponseEntity.ok(mapper.usuarioToUsuarioResponse(usuario));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity deletar(@PathVariable Long id) {
+        repository.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     private <T> Map<Path, String> validar(T dto) {

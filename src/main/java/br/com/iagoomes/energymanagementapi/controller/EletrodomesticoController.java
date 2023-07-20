@@ -1,7 +1,10 @@
 package br.com.iagoomes.energymanagementapi.controller;
 
 import br.com.iagoomes.energymanagementapi.controller.mapper.EletrodomesticoMapper;
-import br.com.iagoomes.energymanagementapi.domain.eletrodomestico.*;
+import br.com.iagoomes.energymanagementapi.domain.eletrodomestico.Eletrodomestico;
+import br.com.iagoomes.energymanagementapi.domain.eletrodomestico.EletrodomesticoRequestPost;
+import br.com.iagoomes.energymanagementapi.domain.eletrodomestico.EletrodomesticoRequestPut;
+import br.com.iagoomes.energymanagementapi.domain.eletrodomestico.EletrodomesticoResponse;
 import br.com.iagoomes.energymanagementapi.repository.EletrodomesticoRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Path;
@@ -11,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -33,15 +35,11 @@ public class EletrodomesticoController {
     @PostMapping
     public ResponseEntity cadastrar(@RequestBody EletrodomesticoRequestPost eletrodomesticoRequestPost, UriComponentsBuilder uriComponentsBuilder) {
         Map<Path, String> validacoesMap = validar(eletrodomesticoRequestPost);
-        if (!validacoesMap.isEmpty()) {
-            return ResponseEntity.badRequest().body(validacoesMap);
-        }
+        if (!validacoesMap.isEmpty()) return ResponseEntity.badRequest().body(validacoesMap);
 
         Eletrodomestico eletrodomestico =
                 mapper.eletrodomesticoRequestPostToEletrodomestico(eletrodomesticoRequestPost);
-
         repository.salvar(eletrodomestico);
-
         EletrodomesticoResponse eletrodomesticoResponse =
                 mapper.eletrodomesticoToEletrodomesticoResponse(eletrodomestico);
 
@@ -60,11 +58,7 @@ public class EletrodomesticoController {
 
     @GetMapping
     public ResponseEntity listar() {
-        List<Eletrodomestico> eletrodomesticos = repository.listar();
-        List<EletrodomesticoResponse> eletrodomesticosResponse =
-                eletrodomesticos.stream().map(
-                        mapper::eletrodomesticoToEletrodomesticoResponse).toList();
-        return ResponseEntity.ok(eletrodomesticosResponse);
+        return ResponseEntity.ok(repository.listar().stream().map(mapper::eletrodomesticoToEletrodomesticoResponse));
     }
 
     @PutMapping("{id}")
@@ -73,7 +67,7 @@ public class EletrodomesticoController {
         if (eletrodomesticoOptional.isEmpty()) return ResponseEntity.notFound().build();
 
         Eletrodomestico eletrodomestico = eletrodomesticoOptional.get();
-        eletrodomestico.atualizar(eletrodomesticoRequestPut);
+        eletrodomestico.atualizarDados(eletrodomesticoRequestPut);
 
         return ResponseEntity.ok(mapper.eletrodomesticoToEletrodomesticoDetalhamentoResponse(eletrodomestico));
     }

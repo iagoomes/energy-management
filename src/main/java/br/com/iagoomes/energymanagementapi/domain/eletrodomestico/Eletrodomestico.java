@@ -15,7 +15,7 @@ public class Eletrodomestico {
     private String modelo;
     private Long potencia;
 
-    public void atualizar(EletrodomesticoRequestPut eletrodomesticoRequestPut) {
+    public void atualizarDados(EletrodomesticoRequestPut eletrodomesticoRequestPut) {
         if (eletrodomesticoRequestPut.nome() != null && !eletrodomesticoRequestPut.nome().isEmpty()){
             this.setNome(eletrodomesticoRequestPut.nome());
         }

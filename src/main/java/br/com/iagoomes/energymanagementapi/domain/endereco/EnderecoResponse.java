@@ -1,4 +1,4 @@
 package br.com.iagoomes.energymanagementapi.domain.endereco;
 
-public record EnderecoResponse(String rua, String numero, String bairro, String cidade, String estado) {
+public record EnderecoResponse(Long id, String rua, String numero, String bairro, String cidade, String estado) {
 }
